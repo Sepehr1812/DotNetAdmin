@@ -11,14 +11,14 @@ namespace KanoonInternship.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> UserManager;
+        private readonly SignInManager<ApplicationUser> SignInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> UserManager,
+            SignInManager<ApplicationUser> SignInManager)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.UserManager = UserManager;
+            this.SignInManager = SignInManager;
         }
 
         public IActionResult Register()
@@ -28,30 +28,30 @@ namespace KanoonInternship.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel Model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var User = new ApplicationUser
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    UserName = model.UserName,
+                    FirstName = Model.FirstName,
+                    LastName = Model.LastName,
+                    UserName = Model.UserName,
                     ActiveState = 0,
                     IsAdmin = false,
                     IsBanned = false,
                     BanUntil = new DateTime(1970, 1, 1),
                 };
-                var result = await userManager.CreateAsync(user, model.Password);
+                var Result = await UserManager.CreateAsync(User, Model.Password);
 
-                if (result.Succeeded)
+                if (Result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, isPersistent: false);
+                    await SignInManager.SignInAsync(User, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
 
-                foreach (var error in result.Errors)
-                    ModelState.AddModelError("", error.Description);
+                foreach (var Error in Result.Errors)
+                    ModelState.AddModelError("", Error.Description);
             }
 
             return View();
@@ -62,6 +62,52 @@ namespace KanoonInternship.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel Model)
+        {
+            if (ModelState.IsValid)
+            {
+                var User = await UserManager.FindByNameAsync(Model.UserName);
+                if (User == null)
+                {
+                    // show "There is no such user name
+                    return RedirectToAction("Register", "Account");
+                }
+                else
+                {
+                    if (!await UserManager.CheckPasswordAsync(User, Model.Password))
+                    {
+                        // show incorrect password message
+                        return View();
+                    }
+                    else // user exists and password is correct
+                    {
+                        // Remember me part will add here - see: https://code-maze.com/authentication-aspnet-core-identity/
+                        await SignInManager.SignInAsync(User, isPersistent: false);
 
+                        // find out if the user is admin or not
+                        if (User.IsAdmin)
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await SignInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
