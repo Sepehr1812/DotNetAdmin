@@ -21,4 +21,24 @@ namespace KanoonInternship.Models
 
         public DateTime BanUntil { get; set; }
     }
+
+    // Class for Json object
+    public class UserInfo
+    {
+        public string Id { get; set; }
+
+        public string UserName { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string ActiveState { get; set; }
+
+        public string IsAdmin { get; set; }
+
+        public string IsBanned { get; set; }
+
+        public string BanUntil { get; set; }
+    }
 }

@@ -79,22 +79,17 @@ namespace KanoonInternship.Controllers
                     if (!await UserManager.CheckPasswordAsync(User, Model.Password))
                     {
                         // show incorrect password message
-                        return View();
+                        return View(Model);
                     }
                     else // user exists and password is correct
                     {
+                        // TODO: determain if the user is rejected or waiting
+
                         // Remember me part will add here - see: https://code-maze.com/authentication-aspnet-core-identity/
                         await SignInManager.SignInAsync(User, isPersistent: false);
 
-                        // find out if the user is admin or not
-                        if (User.IsAdmin)
-                        {
-                            return RedirectToAction("Index", "Admin");
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
+                        // go to home page
+                        return RedirectToAction("Index", "Home");
                     }
                 }
             }
