@@ -28,21 +28,21 @@ namespace KanoonInternship.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel Model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var User = new ApplicationUser
                 {
-                    FirstName = Model.FirstName,
-                    LastName = Model.LastName,
-                    UserName = Model.UserName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    UserName = model.UserName,
                     ActiveState = 0,
                     IsAdmin = false,
                     IsBanned = false,
                     BanUntil = new DateTime(1970, 1, 1),
                 };
-                var Result = await UserManager.CreateAsync(User, Model.Password);
+                var Result = await UserManager.CreateAsync(User, model.Password);
 
                 if (Result.Succeeded)
                 {
@@ -64,11 +64,11 @@ namespace KanoonInternship.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel Model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var User = await UserManager.FindByNameAsync(Model.UserName);
+                var User = await UserManager.FindByNameAsync(model.UserName);
                 if (User == null)
                 {
                     // show "There is no such user name
@@ -76,10 +76,10 @@ namespace KanoonInternship.Controllers
                 }
                 else
                 {
-                    if (!await UserManager.CheckPasswordAsync(User, Model.Password))
+                    if (!await UserManager.CheckPasswordAsync(User, model.Password))
                     {
                         // show incorrect password message
-                        return View(Model);
+                        return View(model);
                     }
                     else // user exists and password is correct
                     {
