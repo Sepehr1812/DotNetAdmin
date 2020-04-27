@@ -13,5 +13,7 @@ namespace KanoonInternship.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+
+        public DbSet<Report> Reports { get; set; }
     }
 }

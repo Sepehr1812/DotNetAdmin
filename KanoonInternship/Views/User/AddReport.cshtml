@@ -1,0 +1,51 @@
+﻿@model KanoonInternship.Models.ViewModels.AddReportViewModel
+
+@{
+    ViewData["Title"] = "Add a Report";
+}
+
+<br />
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="text-center">Report</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Add">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Date"></label>
+                        <input asp-for="Date" class="form-control" type="date" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="EntranceTime">Entrance Time</label>
+                        <input asp-for="EntranceTime" class="form-control" type="time" />
+                        <span asp-validation-for="EntranceTime" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ExitTime">Exit time</label>
+                        <input asp-for="ExitTime" class="form-control" type="time" />
+                        <span asp-validation-for="ExitTime" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Text">Report Text</label>
+                        <textarea asp-for="Text" class="form-control" rows="5"></textarea>
+                        <span asp-validation-for="Text" class="text-danger"></span>
+                    </div>
+
+                    <input class="btn btn-primary rounded-1" type="submit" value="Add" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

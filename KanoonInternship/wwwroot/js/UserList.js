@@ -29,7 +29,8 @@ function loadDataTable() {
                             Edit</a>
                         &nbsp;
 
-                        <a href="/Admin/Ban?id=${data}" class="btn btn-danger text-white" style="cursor:pointer; width:70px;">
+                        <a class="btn btn-danger text-white" style="cursor:pointer; width:70px;"
+                            onclick=Ban('/Admin/Ban?id=${data}')>
                             Ban</a>
                         &nbsp;
 
@@ -41,19 +42,19 @@ function loadDataTable() {
                     else if (table.startsWith("Waiting")) {
                         return `<div class="text-center">
                             <a class="btn btn-success text-white" style="cursor:pointer; width:100px;"
-                                onclick=ChangeProperty('/Admin/ChangeProperty?id=${data}&which=${"Active"}')>
+                                onclick=ActiveOrReject('/Admin/ChangeProperty?id=${data}&which=${"Active"}')>
                                 Accept</a>
                             &nbsp;
 
                             <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;"
-                                onclick=ChangeProperty('/Admin/ChangeProperty?id=${data}&which=${"Reject"}')>
+                                onclick=ActiveOrReject('/Admin/ChangeProperty?id=${data}&which=${"Reject"}')>
                                 Reject</a>
                             </div>`;
                     }
                     else {
                         return `<div class="text-center">
                             <a class="btn btn-success text-white" style="cursor:pointer; width:100px;"
-                                onclick=ChangeProperty('/Admin/ChangeProperty?id=${data}&which=${"Unban"}')>
+                                onclick=Unban('/Admin/ChangeProperty?id=${data}&which=${"Unban"}')>
                                 Unban</a>
                             </div>`;
                     }
@@ -92,7 +93,7 @@ function Delete(url) {
     });
 }
 
-function ChangeProperty(url) {
+function ActiveOrReject(url) {
     swal({
         title: "Are you sure?",
         text: "If you do it, you will not able to undo.",
@@ -115,5 +116,37 @@ function ChangeProperty(url) {
                 }
             });
         }
+    });
+}
+
+function Unban(url) {
+    swal({
+        title: "Are you sure?",
+        text: "You can ban this user from All Users table later.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    }).then((willDo) => {
+        if (willDo) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message);
+                        dataTable.ajax.reload();
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        }
+    });
+}
+
+function Ban(url) {
+    $(".date-picker").datepicker({
+        dateFormat: 'dd/mm/yy'
     });
 }
