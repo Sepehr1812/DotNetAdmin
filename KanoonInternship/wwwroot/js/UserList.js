@@ -18,20 +18,14 @@ function loadDataTable() {
             { "data": "lastName", "width": "10%" },
             { "data": "activeState", "width": "10%" },
             { "data": "isAdmin", "width": "10%" },
-            { "data": "isBanned", "width": "10%" },
-            { "data": "banUntil", "width": "10%" },
+            { "data": "bannedUntil", "width": "10%" },
             {
                 "data": "id",
                 "render": function (data) {
                     if (table.startsWith("All")) {
                         return `<div class="text-center">
-                        <a href="/Admin/Edit?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width:70px;">
-                            Edit</a>
-                        &nbsp;
-
-                        <a class="btn btn-danger text-white" style="cursor:pointer; width:70px;"
-                            onclick=Ban('/Admin/Ban?id=${data}')>
-                            Ban</a>
+                        <a href="/Admin/Edit?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width:130px;">
+                            Edit or Ban</a>
                         &nbsp;
 
                         <a class="btn btn-danger text-white" style="cursor:pointer; width:70px;"
@@ -142,11 +136,5 @@ function Unban(url) {
                 }
             });
         }
-    });
-}
-
-function Ban(url) {
-    $(".date-picker").datepicker({
-        dateFormat: 'dd/mm/yy'
     });
 }

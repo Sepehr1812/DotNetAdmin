@@ -21,5 +21,8 @@ namespace KanoonInternship.Models.ViewModels
         [Required]
         [Display(Name = "Username")]
         public string UserName { get; set; }
+
+        [Display(Name = "Ban Until")]
+        public DateTime BanUntil { get; set; }
     }
 }

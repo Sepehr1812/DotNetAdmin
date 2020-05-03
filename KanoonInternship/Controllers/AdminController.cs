@@ -63,6 +63,12 @@ namespace KanoonInternship.Controllers
                             continue;
                     }
 
+                    string BannedUntil;
+                    if (dr[6].ToString() == "False")
+                        BannedUntil = "Not Banned";
+                    else
+                        BannedUntil = dr[7].ToString().Split(" ")[0];
+
                     List.Add(new UserInfo
                     {
                         Id = dr[0].ToString(),
@@ -71,8 +77,7 @@ namespace KanoonInternship.Controllers
                         LastName = dr[3].ToString(),
                         ActiveState = dr[4].ToString(),
                         IsAdmin = dr[5].ToString(),
-                        IsBanned = dr[6].ToString(),
-                        BanUntil = dr[7].ToString()
+                        BannedUntil = BannedUntil
                     });
                 }
             }
@@ -96,6 +101,10 @@ namespace KanoonInternship.Controllers
 
             return Json(new { success = false, message = "Error while deleting user." });
         }
+
+        #endregion
+
+        #region Edit User
 
         // to Active, Reject or Unban a user
         [HttpPost]
@@ -122,10 +131,6 @@ namespace KanoonInternship.Controllers
             return Json(new { success = false, message = "An error occured. Please try again." });
         }
 
-        #endregion
-
-        #region Edit User
-
         public async Task<IActionResult> Edit(string id)
         {
             var AppUser = await UserManager.FindByIdAsync(id);
@@ -138,7 +143,8 @@ namespace KanoonInternship.Controllers
                 Id = AppUser.Id,
                 FirstName = AppUser.FirstName,
                 LastName = AppUser.LastName,
-                UserName = AppUser.UserName
+                UserName = AppUser.UserName,
+                BanUntil = AppUser.BanUntil
             });
         }
 
@@ -152,6 +158,12 @@ namespace KanoonInternship.Controllers
                 AppUser.FirstName = model.FirstName;
                 AppUser.LastName = model.LastName;
                 AppUser.UserName = model.UserName;
+
+                if (model.BanUntil > DateTime.Today)
+                {
+                    AppUser.IsBanned = true;
+                    AppUser.BanUntil = model.BanUntil;
+                }
 
                 var res = await UserManager.UpdateAsync(AppUser);
 

@@ -37,8 +37,6 @@ namespace KanoonInternship.Models
 
         public string IsAdmin { get; set; }
 
-        public string IsBanned { get; set; }
-
-        public string BanUntil { get; set; }
+        public string BannedUntil { get; set; }
     }
 }
