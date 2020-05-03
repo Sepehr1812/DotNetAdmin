@@ -26,10 +26,19 @@
                 <div class="card-header text-white" style="background-color:crimson">
                     <h5 class="text-center">User Panel</h5>
                 </div>
-                <div class="card-body">
-                    <a class="btn btn-block rounded-1" style="width:50%; margin-left:200px; background-color:aqua"
-                       asp-controller="User" asp-action="AddReport">Add a Report</a>
-                </div>
+                @if (!(await UserManager.FindByNameAsync(User.Identity.Name)).IsBanned)
+                {
+                    <div class="card-body">
+                        <a class="btn btn-block rounded-1" style="width:50%; margin-left:200px; background-color:aqua"
+                           asp-controller="User" asp-action="AddReport">Add a Report</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="card-body">
+                        <p class="text-center text-danger">You are BANNED and you can not add a report.<br />Call an Admin to unban.</p>
+                    </div>
+                }
             </div>
         }
         else

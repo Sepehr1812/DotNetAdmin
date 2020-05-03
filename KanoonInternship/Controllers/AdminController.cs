@@ -159,7 +159,7 @@ namespace KanoonInternship.Controllers
                 AppUser.LastName = model.LastName;
                 AppUser.UserName = model.UserName;
 
-                if (model.BanUntil > DateTime.Today)
+                if (model.BanUntil >= DateTime.Today)
                 {
                     AppUser.IsBanned = true;
                     AppUser.BanUntil = model.BanUntil;

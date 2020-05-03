@@ -71,22 +71,35 @@ namespace KanoonInternship.Controllers
                 var User = await UserManager.FindByNameAsync(model.UserName);
                 if (User == null)
                 {
-                    // show "There is no such user name
-                    return RedirectToAction("Register", "Account");
+                    ModelState.AddModelError("", "There is no Username like it. Please Register First.");
                 }
                 else
                 {
+                    if (User.ActiveState != 1) // check activation state
+                    {
+                        if (User.ActiveState == 0)
+                            ModelState.AddModelError("", "Your account is not active yet. Call an Admin.");
+                        else
+                            ModelState.AddModelError("", "Your registration request has been rejected. Sorry.");
+
+                        return View();
+                    }
                     if (!await UserManager.CheckPasswordAsync(User, model.Password))
                     {
-                        // show incorrect password message
+                        ModelState.AddModelError("", "Password is incorrect.");
                         return View(model);
                     }
                     else // user exists and password is correct
                     {
-                        // TODO: determain if the user is rejected or waiting
-
                         // Remember me part will add here - see: https://code-maze.com/authentication-aspnet-core-identity/
                         await SignInManager.SignInAsync(User, isPersistent: false);
+
+                        // check if the user really banned
+                        if (User.IsBanned && User.BanUntil < DateTime.Today)
+                        {
+                            User.IsBanned = false;
+                            await UserManager.UpdateAsync(User);
+                        }
 
                         // go to home page
                         return RedirectToAction("Index", "Home");
