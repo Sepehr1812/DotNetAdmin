@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using KanoonInternship.Data;
 using KanoonInternship.Models;
 using KanoonInternship.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace KanoonInternship.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> UserManager;
 
-        public AdminController(UserManager<ApplicationUser> UserManager)
+        public AdminController(ApplicationDbContext db, UserManager<ApplicationUser> UserManager)
         {
+            _db = db;
             this.UserManager = UserManager;
         }
 
@@ -174,6 +176,27 @@ namespace KanoonInternship.Controllers
                     ModelState.AddModelError("", Error.Description);
             }
             return View(model);
+        }
+
+        #endregion
+
+        #region Report
+
+        public IActionResult AllReports()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetReports()
+        {
+            return Json(new { data = await _db.Reports.ToListAsync() });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Show(int id)
+        {
+            return View(await _db.Reports.FirstOrDefaultAsync(r => r.Id == id));
         }
 
         #endregion

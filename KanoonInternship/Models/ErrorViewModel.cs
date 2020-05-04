@@ -1,5 +1,3 @@
-using System;
-
 namespace KanoonInternship.Models
 {
     public class ErrorViewModel

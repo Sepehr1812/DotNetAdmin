@@ -20,13 +20,13 @@
                         <input asp-for="FirstName" class="form-control" />
                         <span class="text-danger" asp-validation-for="FirstName"></span>
                     </div>
-                    
+
                     <div class="form-group">
                         <label asp-for="LastName"></label>
                         <input asp-for="LastName" class="form-control" />
                         <span class="text-danger" asp-validation-for="LastName"></span>
                     </div>
-                    
+
                     <div class="form-group">
                         <label asp-for="UserName"></label>
                         <input asp-for="UserName" class="form-control" />
@@ -43,6 +43,9 @@
                 </form>
             </div>
         </div>
+
+        <br />
+        <a asp-controller="Admin" asp-action="Tables" asp-route-table="All" class="btn btn-info form-control text-white">Return to List</a>
     </div>
 </div>
 

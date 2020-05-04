@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using KanoonInternship.Data;
+﻿using KanoonInternship.Data;
 using KanoonInternship.Models;
 using KanoonInternship.Models.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace KanoonInternship.Controllers
 {
@@ -29,6 +24,7 @@ namespace KanoonInternship.Controllers
                 Date = DateTime.Today
             });
         }
+
 
         [HttpPost]
         public IActionResult AddAsync(AddReportViewModel model)

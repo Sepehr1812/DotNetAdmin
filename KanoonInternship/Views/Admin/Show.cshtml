@@ -1,0 +1,44 @@
+﻿@model Report
+
+@{
+    ViewData["Title"] = "Show Report";
+}
+
+<br />
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="text-center">Report #@Model.Id</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <label asp-for="Date">Date:&nbsp;</label>
+                    <p class="text-left">@Model.Date.Month/@Model.Date.Day/@Model.Date.Year</p>
+                </div>
+
+                <div class="row">
+                    <label asp-for="EntranceTime">Entrance Time:&nbsp;</label>
+                    <p class="text-left">@Model.EntranceTime</p>
+                </div>
+
+                <div class="row">
+                    <label asp-for="ExitTime">Exit Time:&nbsp;</label>
+                    <p class="text-left">@Model.ExitTime</p>
+                </div>
+
+                <div class="row">
+                    <label asp-for="Text">Time:&nbsp;</label>
+                    <p class="text-left">@Model.Text</p>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <a asp-controller="Admin" asp-action="AllReports" class="btn btn-info form-control text-white">Return to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
